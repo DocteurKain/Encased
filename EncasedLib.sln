@@ -1,0 +1,38 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31624.102
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EncasedLib", "EncasedLib\EncasedLib.csproj", "{AFE58555-1906-47EB-9947-D6506F80E748}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EncasedBoy", "EncasedBoy\EncasedBoy.csproj", "{B209C75B-7348-4097-80CB-0B269DD7DF4A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{55E47740-6330-4E54-9B2F-D34A2BBE08C3}"
+	ProjectSection(SolutionItems) = preProject
+		documentation.txt = documentation.txt
+		hex_file.txt = hex_file.txt
+		in_game.txt = in_game.txt
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AFE58555-1906-47EB-9947-D6506F80E748}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AFE58555-1906-47EB-9947-D6506F80E748}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AFE58555-1906-47EB-9947-D6506F80E748}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AFE58555-1906-47EB-9947-D6506F80E748}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B209C75B-7348-4097-80CB-0B269DD7DF4A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B209C75B-7348-4097-80CB-0B269DD7DF4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B209C75B-7348-4097-80CB-0B269DD7DF4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B209C75B-7348-4097-80CB-0B269DD7DF4A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A0056858-83D5-47C1-9BB5-E22EEEDDDB43}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,85 @@
+--------------------------------------------------
+
+Encased game, test on version 1.0.906.xxxx
+Structure of the language files
+
+The French version designed by GlobaLoc GmbH is imperfect and full of errors.
+
+Files located in the directory
+{game_directory}\Encased_Data\StreamingAssets\Localization
+
+Tests on English, French, German and Spanish files
+
+--------------------------------------------------
+
+Jeu Encased, test sur la version 1.0.906.xxxx
+Structure des fichiers de langue
+
+Volonté de traduction en français, la version
+française conçue par GlobaLoc GmbH est imparfaite
+et remplie d'erreurs.
+
+Fichiers localisés dans le répertoire
+{répertoire_du_jeu}\Encased_Data\StreamingAssets\Localization
+
+Tests sur les fichiers anglais, français, allemand et espagnol
+
+--------------------------------------------------
+
+ex: DE.locale
+
+
+File Header (Entête)
+0xDE
+
+
+A3 F3 52 92 03 D9 22
+4D 61 67 65 6C 6C 61 6E 2D 53 74 61 74 69 6F 6E 20 E2 80 93 20 45 69 6E
+67 61 6E 67 73 68 61 6C 6C 65
+
+A3		start
+F3 52	address
+92		end
+03		?
+D9		type
+22		length		22 (hexadecimal) / 34 (decimal)
+					Text length = 34 bytes
+[4D-65]	text		Magellan-Station – Eingangshalle
+
+
+CD 06 05 92 02 D9 F9
+3C 6E 72 3E 45 69 6E 20 53 6F 6C 64 61 74 20 64 65 72 20 53 63 68 77 61
+72 7A 65 6E 20 41 62 74 65 69 6C 75 6E 67 20 73 63 68 6C C3 A4 66 74 20
+61 75 66 20 65 69 6E 65 72 20 6F 72 61 6E 67 65 6E 65 6E 20 4B 75 6E 73
+74 6C 65 64 65 72 63 6F 75 63 68 2E 20 53 65 69 6E 65 20 73 63 68 77 61
+72 7A 65 20 55 6E 69 66 6F 72 6D 20 69 73 74 20 62 72 61 6E 64 6E 65 75
+2C 20 73 65 69 6E 65 20 53 74 69 65 66 65 6C 20 68 69 6E 67 65 67 65 6E
+20 73 69 6E 64 20 6D 69 74 20 62 72 61 75 6E 65 6D 20 53 74 61 75 62 20
+65 69 6E 67 65 64 65 63 6B 74 2E 20 53 65 69 6E 65 20 4E 61 6D 65 6E 73
+73 63 68 69 6C 64 20 6B 61 6E 6E 20 6D 61 6E 20 6E 6F 63 68 20 67 75 74
+20 6C 65 73 65 6E 3A 20 E2 80 9E 41 64 61 6E 20 4D 6F 73 63 61 72 64 6F
+E2 80 9C 2E 3C 2F 6E 72 3E
+
+CD		start
+06 05	address		CD address (2 bytes)
+92		end
+02		?
+D9		type		Dx => next byte is length
+F9		length		F9 (hexadecimal) / 249 (decimal)
+					Text length = 249 bytes
+[3C-3E]	text		<nr>Ein Soldat der Schwarzen Abteilung schläft auf einer orangenen Kunstledercouch. Seine schwarze Uniform ist brandneu, seine Stiefel hingegen sind mit braunem Staub eingedeckt. Seine Namensschild kann man noch gut lesen: „Adan Moscardo“.</nr>
+
+
+.....
+
+CE 00 01 C3 43 92 00 B2
+53 70 65 63 69 61 6C 20 41 70 70 65 61 72 61 6E 63 65
+
+CE				start
+00 01 C3 43		address		CE address (4 bytes)
+92				end
+00				?
+B2				type		Ax/Bx => type is length, but need substract A0
+							B2 - A0 = 12 (hexadecimal) / 18 (decimal)
+							Text length = 18 bytes
+[53-65]			text		Special Appearance
