@@ -2,9 +2,14 @@
 {
 	public enum Language
 	{
+		Unknown,
 		En,
 		Fr,
 		De,
-		Es
+		Es,
+		Ru,
+		Ch,
+		Tw,
+		Jp
 	}
 }

@@ -81,7 +81,7 @@
                         //var dataHex = data.BytesToHex(false);
                         var text = Encoding.UTF8.GetString(data.ToArray());
 
-                        locale.Elements.Add(new ElementStr(address, category, text));
+                        locale.Elements.Add(new Element(address, category, text));
                     }
                 }
             }
@@ -116,32 +116,6 @@
             File.WriteAllBytes(localeFile, bList.ToArray());
 
             return String.Empty;
-        }
-
-        public static void AddDiffToFile(Locale source, String diffFile)
-        {
-            if (!File.Exists(diffFile))
-                return;
-
-
-        }
-
-        public static void DiffToFile(Locale source, Locale target, String diffFile)
-        {
-            var sb = new StringBuilder();
-
-            foreach(var element in source.Elements)
-            {
-                var t = target.Elements.FirstOrDefault(a => a.Address == element.Address);
-
-                if (t == null)
-                {
-                    sb.AppendLine($"##### {element.Address} #####");
-                    sb.AppendLine(element.Text.ToOneLine());
-                }
-            }
-
-            File.WriteAllText(diffFile, sb.ToString());
         }
     }
 }

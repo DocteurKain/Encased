@@ -8,7 +8,7 @@
         public String Filename { get; set; }
         public Language Language { get; set; }
         public List<Byte> Header { get; set; } = new();
-        public List<ElementStr> Elements { get; set; } = new();
+        public List<Element> Elements { get; set; } = new();
 
         public Locale() { }
 

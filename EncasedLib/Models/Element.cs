@@ -2,15 +2,15 @@
 {
     using System;
 
-    public class ElementStr
+    public class Element
     {
         public String Address { get; set; }
         public String Category { get; set; }
         public String Text { get; set; }
 
-        public ElementStr() { }
+        public Element() { }
 
-        public ElementStr(String address, String category, String text)
+        public Element(String address, String category, String text)
         {
             Address = address;
             Category = category;
