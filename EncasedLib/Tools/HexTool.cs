@@ -1,11 +1,29 @@
 ﻿namespace EncasedLib.Tools
 {
     using System;
+    using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using System.Text;
 
     public static class HexTool
     {
+        public static Byte[] IntToBytes(this Int32 value)
+        {
+            var bValue = BitConverter.GetBytes(value);
+
+            if (value < 256)
+                return new Byte[] { bValue[0] };
+
+            if (value < 65535)
+                return new Byte[] { bValue[1], bValue[0] };
+
+            if (value < 16777215)
+                return new Byte[] { bValue[2], bValue[1], bValue[0] };
+
+            return new Byte[] { bValue[3], bValue[2], bValue[1], bValue[0] };
+        }
+
         public static UInt16 ByteToDec(this Byte[] value)
         {
             if (value == null) return 0;
@@ -42,5 +60,28 @@
 
             return sb.ToString().ToUpper().Trim();
         }
+
+        public static String BytesToHex(this List<Byte> value, Boolean withSpace = false)
+        {
+            return value.ToArray().BytesToHex(withSpace);
+        }
+
+        public static Byte[] HexToBytes(this String hexString)
+        {
+            if (hexString.Length % 2 != 0)
+                throw new ArgumentException($"The hexadecimal string have an odd number of digits: {0}", hexString);
+
+            var data = new Byte[hexString.Length / 2];
+
+            for (var index = 0; index < data.Length; index++)
+            {
+                var byteValue = hexString.Substring(index * 2, 2);
+
+                data[index] = Byte.Parse(byteValue, NumberStyles.HexNumber, CultureInfo.InvariantCulture);
+            }
+
+            return data;
+        }
+
     }
 }

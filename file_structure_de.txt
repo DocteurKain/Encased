@@ -1,37 +1,18 @@
---------------------------------------------------
+-------------------------------------------------
+Encased Locales
+File Structure
+24 hex columns max (for humanization)
 
-Encased game, test on version 1.0.906.xxxx
-Structure of the language files
-
-The French version designed by GlobaLoc GmbH is imperfect and full of errors.
-
-Files located in the directory
-{game_directory}\Encased_Data\StreamingAssets\Localization
-
-Tests on English, French, German and Spanish files
-
---------------------------------------------------
-
-Jeu Encased, test sur la version 1.0.906.xxxx
-Structure des fichiers de langue
-
-Volonté de traduction en français, la version
-française conçue par GlobaLoc GmbH est imparfaite
-et remplie d'erreurs.
-
-Fichiers localisés dans le répertoire
-{répertoire_du_jeu}\Encased_Data\StreamingAssets\Localization
-
-Tests sur les fichiers anglais, français, allemand et espagnol
-
---------------------------------------------------
-
-ex: DE.locale
+exemple: De.locale
+(sha256)c6777ef938bf772e419a3e188f451c99707c9117558d4fe7acb63a6ce984fd42
+-------------------------------------------------
 
 
-File Header (Entête)
-0xDE
-
+-------------------------------------------------
+[File Header]
+DE
+-------------------------------------------------
+[Data 1]
 
 A3 F3 52 92 03 D9 22
 4D 61 67 65 6C 6C 61 6E 2D 53 74 61 74 69 6F 6E 20 E2 80 93 20 45 69 6E
@@ -44,8 +25,9 @@ F3 52	address
 D9		type
 22		length		22 (hexadecimal) / 34 (decimal)
 					Text length = 34 bytes
-[4D-65]	text		Magellan-Station – Eingangshalle
-
+(4D-65)	text		Magellan-Station – Eingangshalle
+-------------------------------------------------
+[Data 2]
 
 CD 06 05 92 02 D9 F9
 3C 6E 72 3E 45 69 6E 20 53 6F 6C 64 61 74 20 64 65 72 20 53 63 68 77 61
@@ -67,10 +49,9 @@ CD		start
 D9		type		Dx => next byte is length
 F9		length		F9 (hexadecimal) / 249 (decimal)
 					Text length = 249 bytes
-[3C-3E]	text		<nr>Ein Soldat der Schwarzen Abteilung schläft auf einer orangenen Kunstledercouch. Seine schwarze Uniform ist brandneu, seine Stiefel hingegen sind mit braunem Staub eingedeckt. Seine Namensschild kann man noch gut lesen: „Adan Moscardo“.</nr>
-
-
-.....
+(3C-3E)	text		<nr>Ein Soldat der Schwarzen Abteilung schläft auf einer orangenen Kunstledercouch. Seine schwarze Uniform ist brandneu, seine Stiefel hingegen sind mit braunem Staub eingedeckt. Seine Namensschild kann man noch gut lesen: „Adan Moscardo“.</nr>
+-------------------------------------------------
+[Data n]
 
 CE 00 01 C3 43 92 00 B2
 53 70 65 63 69 61 6C 20 41 70 70 65 61 72 61 6E 63 65
@@ -82,4 +63,5 @@ CE				start
 B2				type		Ax/Bx => type is length, but need substract A0
 							B2 - A0 = 12 (hexadecimal) / 18 (decimal)
 							Text length = 18 bytes
-[53-65]			text		Special Appearance
+(53-65)			text		Special Appearance
+-------------------------------------------------

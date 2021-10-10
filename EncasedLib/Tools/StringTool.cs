@@ -5,17 +5,20 @@
 
     public static class StringTool
     {
-        public static String BytesToData(this Byte[] value)
+        public static String ToOneLine(this String text)
         {
-            var text = Encoding.UTF8.GetString(value);
-
-            /*text = text.Replace("\r", "[r]");
+            text = text.Replace("\r", "[r]");
             text = text.Replace("\n", "[n]");
-            text = text.Replace("\t", "[t]");*/
+            text = text.Replace("\t", "[t]");
 
-            text = text.Replace("\r", "");
-            text = text.Replace("\n", "");
-            text = text.Replace("\t", "");
+            return text;
+        }
+
+        public static String ToMultiLine(this String text)
+        {
+            text = text.Replace("[r]", "\r");
+            text = text.Replace("[n]", "\n");
+            text = text.Replace("[t]", "\t");
 
             return text;
         }
