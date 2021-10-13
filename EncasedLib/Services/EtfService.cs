@@ -21,7 +21,7 @@
             var sourceLng = sourceLocale.Language;
             var targetLng = targetLocale.Language;
 
-            sb.AppendLine("##### Encased ETF File [GBL] #####");
+            sb.AppendLine("##### Encased ETF File #####");
             sb.AppendLine($"##### {sourceLng} / {targetLng} #####");
 
             foreach (var element in sourceLocale.Elements)
@@ -41,31 +41,6 @@
             File.WriteAllText(etfFile, sb.ToString(), Encoding.UTF8);
         }
 
-        public static void GenerateMissingEtf(Locale sourceLocale, Locale targetLocale, String etfFile)
-        {
-            var sb = new StringBuilder();
-
-            var sourceLng = sourceLocale.Language;
-            var targetLng = targetLocale.Language;
-
-            sb.AppendLine("##### Encased ETF File [MSS] #####");
-            sb.AppendLine($"##### {sourceLng} / {targetLng} #####");
-
-            foreach (var element in sourceLocale.Elements)
-            {
-                var t = targetLocale.Elements.FirstOrDefault(a => a.Address == element.Address);
-
-                if (t == null)
-                {
-                    sb.AppendLine($"## {element.Address} ## {element.Category} ##");
-                    sb.AppendLine(element.Text.ToOneLine());
-                    sb.AppendLine(String.Empty);
-                }
-            }
-
-            File.WriteAllText(etfFile, sb.ToString(), Encoding.UTF8);
-        }
-
         public static Boolean ImportAll(String etfFile, String inputLocale, String outputLocale)
         {
             if (!File.Exists(etfFile))
@@ -77,7 +52,7 @@
             var (locale, message) = LocaleService.FileToLocale(Language.Unknown, inputLocale);
 
             locale.Elements.Clear();
-            locale.Elements = LoadEtf(etfFile);
+            locale.Elements = LoadEtfToElements(etfFile);
 
             LocaleService.LocaleToFile(locale, outputLocale);
 
@@ -94,7 +69,7 @@
 
             var (locale, message) = LocaleService.FileToLocale(Language.Unknown, inputLocale);
 
-            var elements = LoadEtf(etfFile);
+            var elements = LoadEtfToElements(etfFile);
 
             foreach(var element in elements)
             {
@@ -115,9 +90,139 @@
 
             return true;
         }
+
+        public static void DetectMissingN(String etfFile, String etfOuputFile)
+        {
+            if (!File.Exists(etfFile))
+                return;
+
+            var list = LoadEtf(etfFile, false);
+
+            var count = 0;
+
+            foreach (var l in list)
+            {
+                var matchSource = Regex.Matches(l.Source, @"(?<crnn>\[n\]\[n\]\s{0,1}<nr>)");
+                var targetSource = Regex.Matches(l.Target, @"(?<crnn>\[n\]\[n\]\s{0,1}<nr>)");
+                var target2Source = Regex.Matches(l.Target, @"(?<cr><nr>)");
+
+                if (targetSource.Count == matchSource.Count)
+                    continue;
+
+                if (matchSource.Count > 0)
+                {
+                    if(target2Source.Count == matchSource.Count)
+                    {
+                        count += matchSource.Count;
+
+                        l.Target = l.Target.Replace("<nr>", "[n][n]<nr>");
+                    }               
+                
+                }
+            }
+
+            Console.WriteLine($"count: {count}");
+
+            SaveEtf(list, etfOuputFile, false);
+        }
+
+        public static String CompareTwoEtfSource(String oldFile, String newFile)
+        {
+            if (!File.Exists(oldFile))
+                return String.Empty;
+
+            if (!File.Exists(newFile))
+                return String.Empty;
+
+            var sb = new StringBuilder();
+
+            var oldList = LoadEtf(oldFile, false);
+            var newList = LoadEtf(newFile, false);
+
+            foreach(var nL in newList)
+            {
+                var oL = oldList.FirstOrDefault(a => a.Address == nL.Address);
+
+                if(oL == null)
+                {
+                    sb.AppendLine($"# {nL.Address} # missing");
+                    sb.AppendLine($"{nL.Source}");
+                    continue;
+                }
+
+                var olWoSpace = oL.Source.Replace(" ", "");
+                var nLWoSpace = nL.Source.Replace(" ", "");
+
+                if (olWoSpace != nLWoSpace)
+                {
+                    sb.AppendLine($"# {nL.Address} # update");
+                    sb.AppendLine($"{oL.Source}");
+                    sb.AppendLine($"{nL.Source}");
+                    continue;
+                }
+            }
+
+            return sb.ToString();
+        }
+
+        public static String CountEmpty(String etfFile)
+        {
+            if (!File.Exists(etfFile))
+                return String.Empty;
+
+            var list = LoadEtf(etfFile);
+
+            var sb = new StringBuilder();
+
+            foreach(var l in list)
+                if (l.Target.Trim().Length == 0)
+                    sb.AppendLine($"# {l.Address}");
+
+            return sb.ToString();
+        }
         #endregion
         #region Private Methods
-        private static List<Element> LoadEtf(String etfFile, Boolean addSourceIfMissing = true)
+        private static List<EtfLine> LoadEtf(String etfFile, Boolean convertToMultiLine = true)
+        {
+            var list = new List<EtfLine>();
+
+            if (!File.Exists(etfFile))
+                return list;
+
+            using (var fs = File.OpenRead(etfFile))
+            using (var sr = new StreamReader(fs, Encoding.UTF8))
+            {
+                var header_a = sr.ReadLine();
+                var header_b = sr.ReadLine();
+
+                String line;
+
+                while ((line = sr.ReadLine()) != null)
+                {
+                    var match = Regex.Match(line, @"## (?<address>C[DE].{4,8}) ## (?<category>.{2,8}) ##");
+
+                    if (match.Success)
+                    {
+                        var address = match.Groups["address"].Value.ToString();
+                        var category = match.Groups["category"].Value.ToString();
+                        var source = sr.ReadLine();
+                        var target = sr.ReadLine();
+
+                        if (convertToMultiLine)
+                        {
+                            source = source.ToMultiLine();
+                            target = target.ToMultiLine();
+                        }
+
+                        list.Add(new EtfLine(address, category, source, target));
+                    }
+                }
+            }
+
+            return list;
+        }
+
+        private static List<Element> LoadEtfToElements(String etfFile, Boolean addSourceIfMissing = true)
         {
             var list = new List<Element>();
 
@@ -154,6 +259,32 @@
             }
 
             return list;
+        }
+
+        private static void SaveEtf(List<EtfLine> list, String etfFile, Boolean convertToOneLine = true)
+        {
+            var sb = new StringBuilder();
+
+            sb.AppendLine("##### Encased ETF File #####");
+            sb.AppendLine($"##### En / Fr #####"); // TODO
+
+            foreach(var element in list)
+            {
+                sb.AppendLine($"## {element.Address} ## {element.Category} ##");
+
+                if (convertToOneLine)
+                {
+                    sb.AppendLine(element.Source.ToOneLine());
+                    sb.AppendLine(element.Target.ToOneLine());
+                }
+                else
+                {
+                    sb.AppendLine(element.Source);
+                    sb.AppendLine(element.Target);
+                }
+            }
+
+            File.WriteAllText(etfFile, sb.ToString(), Encoding.UTF8);
         }
         #endregion
     }

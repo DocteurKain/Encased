@@ -10,16 +10,17 @@
 
     internal class Program
     {
-        private static void Main(String[] args)
+        private static void Main()
         {
-            EtfService.ImportAll(
-                @"E:\Dev\DotNet\Encased\_files\encased_gbl.etf",
-                @"C:\Games\Encased\Encased_Data\StreamingAssets\Localization\Fr.locale",
-                @"D:\Fr.locale");
+            /*EtfService.ImportAll(
+                @"d:\encased.etf",
+                @"d:\source_fr.locale",
+                @"d:\Fr.locale");*/
+
 
 
             Console.WriteLine("done!");
-            //Console.ReadKey(true);
+            Console.ReadKey(true);
         }
     }
 }
