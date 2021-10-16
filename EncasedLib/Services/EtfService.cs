@@ -174,9 +174,14 @@
 
             var sb = new StringBuilder();
 
-            foreach(var l in list)
+            foreach (var l in list)
+            {
+                if (l.Source.Trim().Length == 0)
+                    continue;
+
                 if (l.Target.Trim().Length == 0)
                     sb.AppendLine($"# {l.Address}");
+            }
 
             return sb.ToString();
         }
