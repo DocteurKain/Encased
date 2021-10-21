@@ -125,6 +125,133 @@
 
             SaveEtf(list, etfOuputFile, false);
         }
+        
+        public static void DetectMissingN2(String etfFile, String etfOuputFile)
+        {
+            var lines = EtfService.LoadEtf(etfFile, false);
+
+            foreach (var line in lines)
+            {
+                var sourceSentences = line.Source.SplitInSentences();
+                var targetSentences = line.Target.SplitInSentences();
+
+                var sourceNcountMatch = Regex.Matches(line.Source, @"\[n\]");
+                var targetNcountMatch = Regex.Matches(line.Target, @"\[n\]");
+
+                if (sourceNcountMatch.Count == 0)
+                    continue;
+
+                if (sourceNcountMatch.Count == targetNcountMatch.Count)
+                    continue;
+
+                if (sourceSentences.Length != targetSentences.Length)
+                    continue;
+
+                var sb = new StringBuilder();
+
+                var i = 0;
+
+                foreach (var sourceSentence in sourceSentences)
+                {
+                    var newTargetSentence = targetSentences[i];
+
+                    var sourceSentenceNcountMatch = Regex.Matches(sourceSentence, @"\[n\]");
+                    var targetSentenceNcountMatch = Regex.Matches(newTargetSentence, @"\[n\]");
+
+                    if (sourceSentenceNcountMatch.Count > 0)
+                    {
+                        if (sourceSentenceNcountMatch.Count > targetSentenceNcountMatch.Count)
+                        {
+                            // Starts with [n][n]
+                            if (sourceSentence.StartsWith("[n][n]") && !newTargetSentence.StartsWith("[n][n]"))
+                                newTargetSentence = "[n][n]" + newTargetSentence.TrimStart();
+
+                            if (sourceSentence.StartsWith("[n]") && !newTargetSentence.StartsWith("[n]"))
+                                newTargetSentence = "[n]" + newTargetSentence.TrimStart();
+
+                            // Ends with [n][n]
+
+                            // </nr>[n][n]
+                            if (sourceSentence.Contains("</nr>[n][n]") && !newTargetSentence.Contains("</nr>[n][n]"))
+                                newTargetSentence = newTargetSentence.Replace("</nr>", "</nr>[n][n]");
+
+                            // [n][n]<nr>
+                            if (sourceSentence.Contains("[n][n]<nr>") && !newTargetSentence.Contains("[n][n]<nr>"))
+                                newTargetSentence = newTargetSentence.Replace("<nr>", "[n][n]<nr>");
+                        }
+                    }
+
+                    sb.Append(newTargetSentence);
+                    i++;
+                }
+
+                //
+                line.Target = sb.ToString();
+            }
+
+            EtfService.SaveEtf(lines, etfOuputFile, false);
+        }
+
+        public static void DetectMissingN3(String etfFile, String debugFile)
+        {
+            if (!File.Exists(etfFile))
+                return;
+
+            var list = LoadEtf(etfFile, false);
+
+            var count = 0;
+            var enCount = 0;
+            var frCount = 0;
+
+            var sb = new StringBuilder();
+
+            foreach (var l in list)
+            {
+                var enMatch = Regex.Matches(l.Source, @"\[n\]");
+                var frMatch = Regex.Matches(l.Target, @"\[n\]");
+
+                enCount += enMatch.Count;
+                frCount += frMatch.Count;
+
+                if (enMatch.Count != frMatch.Count)
+                {
+                    if (enMatch.Count - frMatch.Count > 0)
+                    {
+                        sb.AppendLine($"{l.Address} en:{enMatch.Count} fr:{frMatch.Count}");
+                        count++;
+                    }
+                }
+            }
+
+            Console.WriteLine($"total : {count}");
+
+            File.WriteAllText(debugFile, sb.ToString(), Encoding.UTF8);
+        }
+
+        public static void FinalDot(String etfFile, String etfOuputFile)
+        {
+            if (!File.Exists(etfFile))
+                return;
+
+            var lines = LoadEtf(etfFile, false);
+
+            foreach (var line in lines)
+            {
+                if(line.Source.EndsWith(".") && !line.Target.EndsWith("."))
+                {
+                    if (line.Target.EndsWith("!"))
+                        continue;
+                    if (line.Target.EndsWith("?"))
+                        continue;
+                    if (line.Target.EndsWith("</nr>"))
+                        continue;
+
+                    line.Target = line.Target + ".";
+                }
+            }
+
+            EtfService.SaveEtf(lines, etfOuputFile, false);
+        }
 
         public static String CompareTwoEtfSource(String oldFile, String newFile)
         {
@@ -187,7 +314,7 @@
         }
         #endregion
         #region Private Methods
-        private static List<EtfLine> LoadEtf(String etfFile, Boolean convertToMultiLine = true)
+        public static List<EtfLine> LoadEtf(String etfFile, Boolean convertToMultiLine = true)
         {
             var list = new List<EtfLine>();
 
@@ -266,7 +393,7 @@
             return list;
         }
 
-        private static void SaveEtf(List<EtfLine> list, String etfFile, Boolean convertToOneLine = true)
+        public static void SaveEtf(List<EtfLine> list, String etfFile, Boolean convertToOneLine = true)
         {
             var sb = new StringBuilder();
 
