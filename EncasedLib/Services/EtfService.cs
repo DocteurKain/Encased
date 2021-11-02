@@ -18,15 +18,14 @@
         {
             var sb = new StringBuilder();
 
-            var sourceLng = sourceLocale.Language;
-            var targetLng = targetLocale.Language;
+            var date = DateTime.Now.ToString("g");
 
             sb.AppendLine("##### Encased ETF File #####");
-            sb.AppendLine($"##### {sourceLng} / {targetLng} #####");
+            sb.AppendLine($"##### {date} #####");
 
-            foreach (var element in sourceLocale.Elements)
+            foreach (var element in sourceLocale.Lines)
             {
-                var t = targetLocale.Elements.FirstOrDefault(a => a.Address == element.Address);
+                var t = targetLocale.Lines.FirstOrDefault(a => a.Address == element.Address);
                 
                 var targetText = String.Empty;
 
@@ -41,20 +40,18 @@
             File.WriteAllText(etfFile, sb.ToString(), Encoding.UTF8);
         }
 
-        public static Boolean ImportAll(String etfFile, String inputLocale, String outputLocale)
+        public static Boolean ImportAll(String etfFile, String localeFile)
         {
             if (!File.Exists(etfFile))
                 return false;
 
-            if (!File.Exists(inputLocale))
-                return false;
+            var locale = new Locale();
 
-            var (locale, message) = LocaleService.FileToLocale(Language.Unknown, inputLocale);
+            locale.Filename = Path.GetFileName(localeFile);
+            locale.Header = HeaderTool.Get(locale.Filename);
+            locale.Lines = LoadEtfToElements(etfFile);
 
-            locale.Elements.Clear();
-            locale.Elements = LoadEtfToElements(etfFile);
-
-            LocaleService.LocaleToFile(locale, outputLocale);
+            FileService.LocaleToFile(locale, localeFile);
 
             return true;
         }
@@ -67,30 +64,31 @@
             if (!File.Exists(inputLocale))
                 return false;
 
-            var (locale, message) = LocaleService.FileToLocale(Language.Unknown, inputLocale);
+            var locale = FileService.FileToLocale(inputLocale);
 
             var elements = LoadEtfToElements(etfFile);
 
             foreach(var element in elements)
             {
-                var e = locale.Elements.FirstOrDefault(a => a.Address == element.Address);
+                var e = locale.Lines.FirstOrDefault(a => a.Address == element.Address);
 
                 if(e == null)
                 {
-                    locale.Elements.Add(element);
+                    locale.Lines.Add(element);
                 }
             }
 
-            var o_elements = locale.Elements.OrderBy(a => a.Address);
+            var o_elements = locale.Lines.OrderBy(a => a.Address);
 
-            locale.Elements.Clear();
-            locale.Elements.AddRange(o_elements);
+            locale.Lines.Clear();
+            locale.Lines.AddRange(o_elements);
 
-            LocaleService.LocaleToFile(locale, outputLocale);
+            FileService.LocaleToFile(locale, outputLocale);
 
             return true;
         }
 
+        /*
         public static void DetectMissingN(String etfFile, String etfOuputFile)
         {
             if (!File.Exists(etfFile))
@@ -312,6 +310,7 @@
 
             return sb.ToString();
         }
+        */
         #endregion
         #region Private Methods
         public static List<EtfLine> LoadEtf(String etfFile, Boolean convertToMultiLine = true)
@@ -354,9 +353,9 @@
             return list;
         }
 
-        private static List<Element> LoadEtfToElements(String etfFile, Boolean addSourceIfMissing = true)
+        private static List<LocaleLine> LoadEtfToElements(String etfFile, Boolean addSourceIfMissing = true)
         {
-            var list = new List<Element>();
+            var list = new List<LocaleLine>();
 
             if (!File.Exists(etfFile))
                 return list;
@@ -385,7 +384,7 @@
 
                         target = target.ToMultiLine();
 
-                        list.Add(new Element(address, category, target));
+                        list.Add(new LocaleLine(address, category, target));
                     }
                 }
             }

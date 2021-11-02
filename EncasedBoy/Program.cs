@@ -9,22 +9,16 @@
     using EncasedLib.Tools;
     using System.Text.RegularExpressions;
     using System.Text;
+    using System.Linq;
+    using System.Collections.Generic;
 
     internal class Program
     {
         private static void Main()
         {
-            /*EtfService.ImportAll(
-                @"E:\Dev\DotNet\Encased\_files\encased.etf",
-                @"d:\source_fr.locale",
-                @"d:\Fr.locale");*/
 
 
 
-
-
-            //Console.WriteLine("done!");
-            //Console.ReadKey(true);
         }
     }
 }

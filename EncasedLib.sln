@@ -9,12 +9,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EncasedBoy", "EncasedBoy\En
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{55E47740-6330-4E54-9B2F-D34A2BBE08C3}"
 	ProjectSection(SolutionItems) = preProject
-		file_structure_de.txt = file_structure_de.txt
-		file_structure_fr.txt = file_structure_fr.txt
-		headers.txt = headers.txt
-		hex_file.txt = hex_file.txt
-		in_game.txt = in_game.txt
-		README.md = README.md
+		_docs\file_structure_de.txt = _docs\file_structure_de.txt
+		_docs\file_structure_fr.txt = _docs\file_structure_fr.txt
+		_docs\headers.txt = _docs\headers.txt
+		_docs\hex_file.txt = _docs\hex_file.txt
+		_docs\in_game.txt = _docs\in_game.txt
 	EndProjectSection
 EndProject
 Global
