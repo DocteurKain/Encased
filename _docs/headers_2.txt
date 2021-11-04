@@ -1,0 +1,35 @@
+De - 42091
+DE A4 6D 52 92 03 D9
+
+En - 42547
+DE A6 36 3C 92 03 B9
+
+Es - 42084
+DE A4 66 52 92 03 D9
+
+Fr - 42086
+DE A4 68 52 92 03 B9
+
+
+[File Header]	DE			
+[Length]		A4 6D		42093
+[End]			92
+?				03
+				
+
+
+
+CE				start
+00 01 C3 43		address		CE address (4 bytes)
+92				end
+00				?
+B2				type		Ax/Bx => type is length, but need substract A0
+							B2 - A0 = 12 (hexadecimal) / 18 (decimal)
+							Text length = 18 bytes
+(53-65)			text		Special Appearance
+
+
+
+new fr			A687		42628
+
+				A686 ok
