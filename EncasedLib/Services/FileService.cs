@@ -92,12 +92,15 @@
             if (locale == null)
                 return "Locale is null!";
             
+            var countHex = (locale.Lines.Count + 2).IntToBytes();
+
             var bList = new List<Byte>();
 
             bList.Add(0xDE);
+            bList.AddRange(countHex);
             bList.AddRange(locale.Header);
 
-            foreach(var element in locale.Lines)
+            foreach (var element in locale.Lines)
             {
                 bList.AddRange(element.Address.HexToBytes());
                 bList.Add(0x92);

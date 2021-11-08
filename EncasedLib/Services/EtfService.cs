@@ -40,7 +40,7 @@
             File.WriteAllText(etfFile, sb.ToString(), Encoding.UTF8);
         }
 
-        public static Boolean ImportAll(String etfFile, String localeFile)
+        public static Boolean GenerateLocaleFile(String etfFile, String localeFile)
         {
             if (!File.Exists(etfFile))
                 return false;
