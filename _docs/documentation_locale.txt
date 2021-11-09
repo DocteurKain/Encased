@@ -1,0 +1,64 @@
+------------------------------------------
+
+Les fichiers .locale
+
+Les fichiers .locale comprennent la totalité de la traduction du jeu par langue, un par langue, celui qui nous intéresse est le Fr.locale situé dans le répertoire {répertoire_du_jeu}\Encased_Data\StreamingAssets\Localization
+
+Sauvegarder votre fichier d'origine avant toute modification !
+
+------------------------------------------
+
+Le formatage est le suivant, exemple du fichier français.
+
+DE A6 86 52 92 03 B9 53 74 61 74 69 6F 6E 20 4D 61 67 65 6C 6C 61 6E 20 E2 80 93 20 48 61 6C 6C 55 92 05 B7 47 72 6F 74 74 65 20 64 65 73 20 50 72 C3 A9 63 75 72 73 65 75 72 73 CD 03 A9 92 02 AC 50 72 6F 74 61 67 6F 6E 69 73 74 65 CD 03 AA 92 49 B0 44 69 76 69 73 69 6F 6E 20 C3 89 62 C3 A8 6E 65
+
+
+DE est l'entête (1 octet)
+
+A6 86 le nombre de lignes (2 octets), c'est-à-dire 42630 en décimal
+
+
+suivi d'un ensemble d'octets que j'ai pas réussi à parfaitement traduire, qui doit correspondre à deux lignes de traductions et que je recopie bêtement du fichier original.
+
+
+
+Puis viennent les éléments qui nous intéresse, l'ensemble des lignes.
+
+CD 06 08 92 01 D9 33 4C 27 69 6E 74 65 72 72 6F 67 65 72 20 73 75 72 20 6C 61 20 6D 75 73 69 71 75 65 20 71 75 69 20 73 6F 72 74 20 64 65 20 6C 27 6F 72 65 69 6C 6C 65 72 2E
+
+(J'ai pris une ligne courte en exemple)
+
+
+CD 06 08 est l'adresse de référence de la traduction (3 ou 5 octets), commence par CD pour 3 octets et CE pour 5 octets
+
+92 marque la fin de l'adresse (1 octet, toujours la valeur 92)
+
+01 je ne suis pas sûr de cet octet, j'ai l'impression que c'est un numéro de version de la traduction, certains éléments devenant plus grands lors des mises à jour (1 octet)
+
+D9 33 taille de la chaîne de caractères (2 ou 3 octets), celui-ci est plus compliqué à comprendre, je les explique en détails ensuite
+
+4C ... 2E qui est la chaîne de caractères en UTF8, à savoir "L'interroger sur la musique qui sort de l'oreiller." (sans les doubles quotes)
+
+
+Puis ainsi de suite, un nouvel octet CD ou CE pour une nouvelle ligne, ...
+
+------------------------------------------
+
+Taille de la chaîne de caractères
+
+Le premier octet indique le type de taille,
+D9, la taille sera indiquée sur 1 octet
+DA, la taille sera indiquée sur 2 octets
+
+
+Exemple
+
+D9 33, la chaîne de caractères possède une longueur de 51 caractères en décimal, c'est-à-dire 33 en héxa.
+
+Autres exemples, 
+
+DA 01 E1, la chaîne de caractères possède une longueur de 481 caractères en décimal, c'est-à-dire 01E1 en héxa.
+
+DA 0A 90, la chaîne de caractères possède une longueur de 2704 caractères en décimal (c'est la plus longue à l'heure actuelle), donc 0A90 en héxa.
+
+------------------------------------------

@@ -1,0 +1,54 @@
+------------------------------------------
+
+Le fichier .etf
+
+Le fichier .etf comprends la totalité de la traduction française à partir de l'anglais.
+
+------------------------------------------
+
+Le formatage est le suivant.
+
+Entête standard,
+
+##### Encased ETF File #####
+##### En / Fr #####
+
+
+puis les lignes de traduction
+
+## ADRESSE ## NUMERO_DE_VERSION ##
+TEXTE_EN_ANGLAIS
+TEXTE_EN_FRANCAIS
+
+exemple,
+
+## CD0616 ## 01 ##
+If the Committee wants unity, they should start with the menu. The slogans they can stick right up their collective ass.[n][n]<nr>Adan closes his eyes and swiftly falls asleep, hugging his pillow.</nr>
+Si le Comité veut l'unité, il n'a qu'à commencer par le menu. Leurs slogans à la con sur le collectif, ils peuvent se les mettre où je pense.[n][n]<nr>Adan ferme les yeux et s'endort rapidement en serrant son oreiller dans ses bras.</nr>
+
+c'est-à-dire,
+
+première ligne pour l'identification,
+seconde ligne pour la version anglaise,
+troisième ligne pour la version française.
+
+et ainsi de suite.
+
+------------------------------------------
+
+Pour notifier les sauts de ligne, le caractère \n de saut de ligne et transformer par le caractère [n] dans le fichier .etf, cela permet d'éviter d'avoir des sauts de ligne lorsque l'on utilise un éditeur de fichier texte standard.
+
+Le logiciel Notepad++ est intéressant pour lire les fichiers .etf, car il permet un formatage couleur.
+
+Language/User Defined Language/Define your language...
+Import...
+et utiliser le fichier encased_etf.xml présent dans le dossier _doc du github.
+
+------------------------------------------
+
+Conversion vers le fichier .locale
+
+
+(en cours de rédaction)
+
+------------------------------------------
