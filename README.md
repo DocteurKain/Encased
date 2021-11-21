@@ -6,8 +6,11 @@
 
  Amélioration de la traduction française, l'originale conçue par GlobaLoc GmbH est imparfaite et remplie d'erreurs.
 
- - Traduction terminée pour la version 1.2.1027.0615
- - Ajout d'un grand nombre de saut de lignes
+ - Tous les dialogues traduits
+ - Toutes les scènes de fin traduites
+ - Modification de certaines traductions baclées
+ - Correction des balises <nr> et </nr> (manquantes ou doublons)
+ - Ajout de tous les sauts de ligne manquants (plusieurs milliers)
  - Modification des couleurs par leur équivalent Ambre, Ébène, Azur, Ivoire et Argent
  - Modification du sous-titrage de l'intro
  - Modification des erreurs dans les menus
