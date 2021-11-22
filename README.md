@@ -9,7 +9,7 @@
  - Tous les dialogues traduits
  - Toutes les scènes de fin traduites
  - Modification de certaines traductions baclées
- - Correction des balises <nr> et </nr> (manquantes ou doublons)
+ - Correction des balises nr et /nr (manquantes ou doublons)
  - Ajout de tous les sauts de ligne manquants (plusieurs milliers)
  - Modification des couleurs par leur équivalent Ambre, Ébène, Azur, Ivoire et Argent
  - Modification du sous-titrage de l'intro
