@@ -87,7 +87,7 @@
             return locale;
         }
 
-        public static String LocaleToFile(Locale locale, String localeFile)
+        public static String LocaleToFile(Locale locale, String localeFile, Boolean useSource = false)
         {
             if (locale == null)
                 return "Locale is null!";

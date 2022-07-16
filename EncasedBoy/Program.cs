@@ -6,6 +6,8 @@
     using System.Text;
     using System.Text.RegularExpressions;
     using EncasedLib.Services;
+    using EncasedLib.Tools;
+    using Newtonsoft.Json;
 
     internal class Program
     {
@@ -14,15 +16,30 @@
             // Doit être changer pour être utilisé !
             // To be changed to be used!
 
-            /*EtfService.GenerateLocaleFile(
-                @"E:\Dev\DotNet\Encased\_files\encased.etf",
-                @"D:\Fr.locale"
-            );*/
+            /*
+            
+            var frFile = @"C:\Games\Encased\Encased_Data\StreamingAssets\Localization\Fr.locale";
 
-            var enLocale = FileService.FileToLocale(@"C:\Games\Encased_Localization\En_1.2.locale");
-            var frLocale = FileService.FileToLocale(@"C:\Games\Encased_Localization\Fr_1.2.locale");
+            //var ruLocale = FileService.FileToLocale(@"C:\Games\Encased\Encased_Data\StreamingAssets\Localization\Ru.locale");
+            //var enLocale = FileService.FileToLocale(@"C:\Games\Encased\Encased_Data\StreamingAssets\Localization\En.locale");
+            var frLocale = FileService.FileToLocale(@"C:\Games\Encased\Encased_Data\StreamingAssets\Localization\Fr.locale_original");
 
-            EtfService.GenerateGlobalEtf(enLocale, frLocale, @"D:\Encased_1.2.etf");
+            var list = EtfService.LoadEtf(etfFile);
+
+            foreach(var line in frLocale.Lines)
+            {
+                var l = list.FirstOrDefault(a => a.Address == line.Address);
+                if (l == null) continue;
+                line.Text = l.Target;
+            }
+
+            FileService.LocaleToFile(frLocale, frFile);
+            */
+
+            var etfFile = @"E:\Dev\DotNet\Encased\_files\encased.etf";
+
+            EtfService.GenerateLocaleFile(etfFile, @"d:\En.locale", true);
+            EtfService.GenerateLocaleFile(etfFile, @"d:\Fr.locale");
         }
 
         private static void FoundMissingN()

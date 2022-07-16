@@ -40,7 +40,7 @@
             File.WriteAllText(etfFile, sb.ToString(), Encoding.UTF8);
         }
 
-        public static Boolean GenerateLocaleFile(String etfFile, String localeFile)
+        public static Boolean GenerateLocaleFile(String etfFile, String localeFile, Boolean useSource = false)
         {
             if (!File.Exists(etfFile))
                 return false;
@@ -49,7 +49,7 @@
 
             locale.Filename = Path.GetFileName(localeFile);
             locale.Header = HeaderTool.Get(locale.Filename);
-            locale.Lines = LoadEtfToElements(etfFile);
+            locale.Lines = LoadEtfToElements(etfFile, useSource: useSource);
 
             FileService.LocaleToFile(locale, localeFile);
 
@@ -86,6 +86,36 @@
             FileService.LocaleToFile(locale, outputLocale);
 
             return true;
+        }
+
+        public static void DetectSourceDiff(List<EtfLine> source, List<EtfLine> target, String outputFile)
+        {
+            var sb = new StringBuilder();
+
+            foreach(var sLine in source)
+            {
+                var tLine = target.FirstOrDefault(a => a.Address == sLine.Address);
+
+                if(tLine == null)
+                {
+                    sb.AppendLine($"[{sLine.Address}] missing");
+                    continue;
+                }
+
+                var sSource = sLine.Source.Replace(" ", "").Trim();
+                var tSource = tLine.Source.Replace(" ", "").Trim();
+
+                if(sSource != tSource)
+                {
+                    var distance = StringTool.LevenshteinDistance(sLine.Source, tLine.Source);
+
+                    sb.AppendLine($"[{sLine.Address}] different {distance}");
+
+                    continue;
+                }
+            }
+
+            File.WriteAllText(outputFile, sb.ToString());
         }
 
         /*
@@ -353,7 +383,7 @@
             return list;
         }
 
-        private static List<LocaleLine> LoadEtfToElements(String etfFile, Boolean addSourceIfMissing = true)
+        private static List<LocaleLine> LoadEtfToElements(String etfFile, Boolean addSourceIfMissing = true, Boolean useSource = false)
         {
             var list = new List<LocaleLine>();
 
@@ -376,8 +406,12 @@
                     {
                         var address = match.Groups["address"].Value.ToString();
                         var category = match.Groups["category"].Value.ToString();
+
                         var source = sr.ReadLine();
                         var target = sr.ReadLine();
+
+                        if (useSource)
+                            target = source;
 
                         if (addSourceIfMissing && target.Length == 0)
                             target = source;
